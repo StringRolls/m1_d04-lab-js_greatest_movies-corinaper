@@ -39,7 +39,7 @@ function scoresAverage(data) {
     if (el.score === undefined){return}
     return acc + el.score
   },0)/data.length;
-  return parseInt(average).toFixed(2)}
+  return average.toFixed(2)}
   else return 0
 };
 
@@ -52,7 +52,7 @@ function dramaMoviesScore(data) {
   const average = dramaMovies.reduce((acc, el)=>{
     return acc + el.score
   },0)/dramaMovies.length;
-  return average}
+  return average.toFixed(2)}
   else return 0;
 };
 
@@ -74,32 +74,34 @@ function orderByYear(data) {
 function orderAlphabetically(data) {
   const first20 = [];
   const sortedByLetter = data.sort((prev, curr) => {
-    if (prev.year>curr.year){return 1}
-   if (prev.year<curr.year){return -1}
-   if (prev.year === 0){return 0}
+    if (prev.title>curr.title){return 1}
+   if (prev.title<curr.title){return -1}
+   if (prev.title === 0){return 0}
   });
    if (sortedByLetter.length>20){
    for (let i=0; i<20; i++){
      first20.push(sortedByLetter[i])
    }
    return first20}
-   else return sortedByLetter
+    return sortedByLetter
 };
 
-// console.log("sorted Alphabetic Order",orderAlphabetically(movies))
+console.log("sorted Alphabetic Order",orderAlphabetically(movies))
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(data) {
-const minuteArray = data.forEach((el)=>{
+const minuteArray = [];
+  data.forEach((el)=>{
    el.duration = el.duration.split("h");
    if (el.duration[1].includes("min")){
     el.duration = el.duration.join(" ").split("min").join(" ").split(" ");
     el.duration = el.duration[0]*60 + parseInt(el.duration[2])
-   } else el.duration = el.duration[0]*60
+   } else el.duration = el.duration[0]*60;
+   minuteArray.push(el)
  }); 
  return minuteArray
 };
-console.log("hours to minutes",turnHoursToMinutes(movies))
+// console.log("hours to minutes",turnHoursToMinutes(movies))
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
 function bestYearAvg(data) {
