@@ -20,7 +20,7 @@ function getAllDirectors(data) {
   return cleanList
 };
 
-console.log(getAllDirectors(movies))
+// console.log(getAllDirectors(movies))
 
 // // Iteration 2: Steven Spielberg. The best? - How many drama movies did STEVEN SPIELBERG direct?
 function howManyMovies(data) {
@@ -30,14 +30,17 @@ function howManyMovies(data) {
   return newList.length
 };
 
-console.log("how many movies",howManyMovies(movies))
+// console.log("how many movies",howManyMovies(movies))
 
 // // Iteration 3: All scores average - Get the average of all scores with 2 decimals
-function scoresAverage(data) {
-  const average = data.reduce((acc, el)=>{
+function scoresAverage(data) { 
+  if (data.length>0){
+  const average = data.reduce((acc, el)=>{ 
+    if (el.score === undefined){return}
     return acc + el.score
   },0)/data.length;
-  return parseInt(parseFloat(average).toFixed(2));
+  return parseInt(average).toFixed(2)}
+  else return 0
 };
 
 console.log("average all movies",scoresAverage(movies))
@@ -45,37 +48,37 @@ console.log("average all movies",scoresAverage(movies))
 // // Iteration 4: Drama movies - Get the average of Drama Movies
 function dramaMoviesScore(data) {
   const dramaMovies = data.filter(el=> el.genre.includes('Drama'))
+  if (dramaMovies.length>0){
   const average = dramaMovies.reduce((acc, el)=>{
     return acc + el.score
   },0)/dramaMovies.length;
-  return [parseFloat(average).toFixed(2),dramaMovies.length] ;
+  return average}
+  else return 0;
 };
 
-console.log("average drama movies",dramaMoviesScore(movies))
+// console.log("average drama movies",dramaMoviesScore(movies))
 
 // // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
 function orderByYear(data) {
    const sortedByYear = data.sort((prev, curr) => {
-   return prev.year - curr.year
+   if (prev.year>curr.year){return 1}
+   if (prev.year<curr.year){return -1}
+   if (prev.year === 0){return 0}
   });
   return sortedByYear
 };
 
-console.log("sorted by year",orderByYear(movies))
+// console.log("sorted by year",orderByYear(movies))
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
 function orderAlphabetically(data) {
   const first20 = [];
   const sortedByLetter = data.sort((prev, curr) => {
-    if (prev.title < curr.title) {
-      return -1;
-  }
-  if (prev.title > curr.title) {
-      return 1;
-  }
-  return 0;
-   });
-   if (sortedByLetter.length<21){
+    if (prev.year>curr.year){return 1}
+   if (prev.year<curr.year){return -1}
+   if (prev.year === 0){return 0}
+  });
+   if (sortedByLetter.length>20){
    for (let i=0; i<20; i++){
      first20.push(sortedByLetter[i])
    }
@@ -83,18 +86,18 @@ function orderAlphabetically(data) {
    else return sortedByLetter
 };
 
-console.log("sorted Alphabetic Order",orderAlphabetically(movies))
+// console.log("sorted Alphabetic Order",orderAlphabetically(movies))
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(data) {
-data.forEach((el)=>{
+const minuteArray = data.forEach((el)=>{
    el.duration = el.duration.split("h");
    if (el.duration[1].includes("min")){
     el.duration = el.duration.join(" ").split("min").join(" ").split(" ");
     el.duration = el.duration[0]*60 + parseInt(el.duration[2])
    } else el.duration = el.duration[0]*60
  }); 
- return data
+ return minuteArray
 };
 console.log("hours to minutes",turnHoursToMinutes(movies))
 
@@ -127,9 +130,9 @@ function bestYearAvg(data) {
      if (allEntries[i][1] === scores[0]){
      bestYear.push(allEntries[i][0])}
    }
-   return `${bestYear} year have the best average score for the movies that were released on that year`
+   return `The best year/s ${bestYear} with an average score of ${scores[0]}`
 };
-console.log(bestYearAvg(movies))
+// console.log(bestYearAvg(movies))
 
 
 
