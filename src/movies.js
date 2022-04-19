@@ -1,7 +1,7 @@
 const movies = require('./data')
 
 //The `movies` array from the file `src/data.js`.
-console.log('movies: ', movies);
+// console.log('movies: ', movies);
 
 
 // // Iteration 1: All directors? - Get the array of all directors.
@@ -37,7 +37,7 @@ function scoresAverage(data) {
   const average = data.reduce((acc, el)=>{
     return acc + el.score
   },0)/data.length;
-  return parseFloat(average).toFixed(2);
+  return parseInt(parseFloat(average).toFixed(2));
 };
 
 console.log("average all movies",scoresAverage(movies))
@@ -75,10 +75,12 @@ function orderAlphabetically(data) {
   }
   return 0;
    });
+   if (sortedByLetter.length<21){
    for (let i=0; i<20; i++){
      first20.push(sortedByLetter[i])
    }
-   return first20
+   return first20}
+   else return sortedByLetter
 };
 
 console.log("sorted Alphabetic Order",orderAlphabetically(movies))
@@ -86,8 +88,11 @@ console.log("sorted Alphabetic Order",orderAlphabetically(movies))
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(data) {
 data.forEach((el)=>{
-   el.duration = el.duration.split("h").join(" ").split("min").join(" ").split(" ");
-   el.duration = el.duration[0]*60 + parseInt(el.duration[2]) + "min"
+   el.duration = el.duration.split("h");
+   if (el.duration[1].includes("min")){
+    el.duration = el.duration.join(" ").split("min").join(" ").split(" ");
+    el.duration = el.duration[0]*60 + parseInt(el.duration[2])
+   } else el.duration = el.duration[0]*60
  }); 
  return data
 };
@@ -98,20 +103,25 @@ function bestYearAvg(data) {
   const scores = [];
   const scoresByYear = {};
   const bestYear = [];
+  //creates a new object with years and scores
   data.map((el)=>{
     if (el.year in scoresByYear){
       return scoresByYear[el.year].push(el.score)
     } else 
     return scoresByYear[el.year] = [el.score]
   });
+  //calculates the averages of the scores
   for (const objEl in scoresByYear){
     scoresByYear[objEl] = scoresByYear[objEl].reduce((acc, score)=>{
    return acc+score
   },0)/scoresByYear[objEl].length;
+
    scores.push(scoresByYear[objEl])};
+   //orders the years from smallest to bigger
    scores.sort((prev, actual)=>{
     return prev - actual
    });
+   //find the right key(year) for the biggest value(score)
    const allEntries = Object.entries(scoresByYear);
    for(let i=0; i<allEntries.length; i++){
      if (allEntries[i][1] === scores[0]){
